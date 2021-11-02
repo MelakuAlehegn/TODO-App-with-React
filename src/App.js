@@ -7,8 +7,7 @@ function App() {
         id: 1,
         text: 'Sera Felega',
         day: 'October 23, 2PM',
-        reminder: false,
-
+        reminder: true,
     },
     {
         id: 2,
@@ -25,16 +24,26 @@ function App() {
 
     }
     ]);
+    const Delete = (id) => {
+        // console.log('delete', id)
+        setState(tasks.filter((task) => task.id !== id))
+    }
     const Reminder = (id) => {
-        // console.log('rem', id)
+        // console.log(id)
         setState(tasks.map((task) => task.id === id ? { ...task, reminder: !task.reminder } : task))
     }
+    const add = (task) => {
+        const id = Math.floor(Math.random() * 1000) + 1
+        const taskAdded = { id, ...task }
+        setState([...tasks, taskAdded])
+
+    }
+
     return (
         <div className='container'>
             <Header />
-            <AddTask />
-            <Tasks tasks={tasks} onRem={Reminder} />
-
+            <AddTask onAdd={add} />
+            {tasks.length > 0 ? <Tasks tasks={tasks} onRem={Reminder} onDelete={Delete} /> : 'No Tasks'}
         </div>
     )
 }
